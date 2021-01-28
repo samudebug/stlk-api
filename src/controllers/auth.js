@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 class AuthController {
     async login(req, res) {
         const exists = await admin.firestore().collection('users').where('uid', '==', req.uid).get();
-        const userFsId = '';
+        let userFsId = '';
         if (exists.empty) {
             userFsId = (await admin.firestore().collection('users').add({uid: req.uid})).id;
         } else {
