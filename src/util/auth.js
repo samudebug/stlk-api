@@ -10,3 +10,5 @@ const authenticate = async (req, res, next) => {
         res.status(401).json({message: 'Invalid Id Token!'});
     }
 }
+
+export default authenticate;
