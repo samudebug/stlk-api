@@ -11,7 +11,7 @@ const setupExpress = () => {
     app.use(cors({origin: '*'}));
     app.use(bodyParser.json());
     if (admin.apps.length == 0) {
-        admin.initializeApp(credentials);
+        admin.initializeApp({credential: admin.credential.cert(credentials)});
     }
     app.use('/', routes)
     return app;
