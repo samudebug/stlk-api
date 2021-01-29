@@ -4,7 +4,13 @@ class InfluencerController {
         try {
             const userQuery = await admin.firestore().collection('users').where('uid', '==', req.uid).limit(1).get();
             const [user] = userQuery.docs;
-            const result = user.data().influencers === undefined ? [] : [...user.data().influencers];
+            const influencersCollection = await user.ref.collection('influencers').get();
+            let result = [];
+            if (!influencersCollection.empty) {
+                result = influencersCollection.docs.map((doc) => {
+                    return [doc.id, ...doc.data()];
+                });
+            }
             return res.send(result);
         } catch(err) {
             console.error(err);
