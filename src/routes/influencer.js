@@ -7,5 +7,6 @@ const influencerController = new InfluencerController();
 
 router.get('/', (req, res) => influencerController.list(req, res));
 router.post('/', (req, res) => influencerController.create(req, res));
+router.put('/:influencerId/socialMedia', (req, res) => influencerController.addSocialMedia(req, res));
 
 export default router;
