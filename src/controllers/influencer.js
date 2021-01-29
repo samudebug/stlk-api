@@ -31,6 +31,18 @@ class InfluencerController {
         }
     }
 
+    async get(req, res) {
+        try {
+            const user = await admin.firestore().collection('users').doc(req.userDocId);
+            const collectionRef = user.collection('influencers');
+            const influencerRef = await collectionRef.doc(req.influencerId).get();
+            return res.send({id: influencerRef.id, ...influencerRef.data()});
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({message: "An error has ocurred"});
+        }
+    }
+
     async addSocialMedia(req, res) {
         try {
             const user = await admin.firestore().collection('users').doc(req.userDocId);
