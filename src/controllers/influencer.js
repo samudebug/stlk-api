@@ -17,6 +17,20 @@ class InfluencerController {
             res.status(500).json({message: "An error has ocurred"});
         }
     }
+
+    async create(req, res) {
+        try {
+            const userQuery = await admin.firestore().collection('users').where('uid', '==', req.uid).limit(1).get();
+            const [user] = userQuery.docs;
+            const collectionRef = user.ref.collection('influencers');
+            const data = req.body;
+            const result = await collectionRef.add(data);
+            return res.send({influencer_id: result.id});
+        } catch(err) {
+            console.error(err);
+            return res.status(500).json({message: "An error has ocurred"});
+        }
+    }
 }
 
 export default InfluencerController;
