@@ -8,7 +8,7 @@ class InfluencerController {
             let result = [];
             if (!influencersCollection.empty) {
                 result = influencersCollection.docs.map((doc) => {
-                    return [doc.id, ...doc.data()];
+                    return {id: doc.id, ...doc.data()}
                 });
             }
             return res.send(result);
