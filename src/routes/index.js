@@ -8,7 +8,6 @@ import twitterRoute from './twitter';
 const router = express.Router();
 
 router.get('/', (req, res) => {res.send({message: 'App is Running!'})});
-router.use('/twitter', twitterRoute);
 router.use((req, res, next) => {
     authenticate(req, res, next);
 });
@@ -17,5 +16,6 @@ router.use((req, res, next) => {
     getUserDoc(req, res, next);
 })
 router.use('/influencers', influencerRoute);
+router.use('/twitter', twitterRoute);
 
 export default router;
