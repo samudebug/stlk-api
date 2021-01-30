@@ -35,7 +35,7 @@ class InfluencerController {
         try {
             const user = await admin.firestore().collection('users').doc(req.userDocId);
             const collectionRef = user.collection('influencers');
-            const influencerRef = await collectionRef.doc(req.influencerId).get();
+            const influencerRef = await collectionRef.doc(req.params.influencerId).get();
             return res.send({id: influencerRef.id, ...influencerRef.data()});
         } catch (err) {
             console.error(err);
@@ -46,7 +46,7 @@ class InfluencerController {
     async addSocialMedia(req, res) {
         try {
             const user = await admin.firestore().collection('users').doc(req.userDocId);
-            const influencerRef = await user.collection('influencers').doc(req.influencerId);
+            const influencerRef = await user.collection('influencers').doc(req.params.influencerId);
             await influencerRef.update({social_medias: admin.firestore.FieldValue.arrayUnion(req.body)});
             return res.send({message: "Social media added successfully"});
 
