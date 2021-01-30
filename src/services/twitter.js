@@ -19,7 +19,6 @@ class TwitterService {
                 bearer_token: response.access_token
             }) 
             const results = await user.get("users/search", {q: handle});
-            console.log(results);
             return results;
         }catch(err) {
             console.error(err);

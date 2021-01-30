@@ -7,7 +7,16 @@ class TwitterController {
         try {
             const handle = req.query.search;
         const result = await this.twitterService.searchHandle(handle);
-        return res.send(result);
+        const formattedResult = result.map((profile) => {
+            return  {
+                id: profile.id_str,
+                name: profile.name,
+                handle: profile.screen_name,
+                description: profile.description,
+                profile_image_url: profile.profile_image_url_https
+            }
+        })
+        return res.send(formattedResult);
         } catch(err) {
             return res.status(500).json({message: "An error has ocurred"});
         }
