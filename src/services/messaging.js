@@ -15,7 +15,12 @@ class MessagingService {
                 socialMediaName: socialMediaName,
                 socialMediaHandle: socialMediaHandle,
 
-            }})
+            },
+            notification: {
+                title: "Nova postagem",
+                body: `${socialMediaHandle} postou no ${socialMediaName}`
+            }
+        })
         } catch (err) {
             console.error(err);
         }
