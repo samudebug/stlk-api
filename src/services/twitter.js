@@ -59,7 +59,9 @@ class TwitterService {
             consumer_secret: process.env.API_KEY_SECRET,
         });
 
-        const stream = user.stream('tweets/search/stream', {expansions: "author_id"});
+        let stream = user.stream('tweets/search/stream', {expansions: "author_id"});
+        stream.close();
+        stream = user.stream('tweets/search/stream', {expansions: "author_id"});
         for await (const { data } of stream) {
             console.log(data);
         }
