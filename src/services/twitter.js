@@ -63,6 +63,7 @@ class TwitterService {
         stream.close();
         stream = user.stream('tweets/search/stream', {expansions: "author_id"});
         for await (const { data } of stream) {
+            console.log(data);
             this.messaging.notifyUsers("twitter",data.includes.users.username);
         }
 
