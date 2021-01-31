@@ -65,8 +65,8 @@ class TwitterService {
         
         for await (const { data } of stream) {
             console.log(data);
-            const user = await user.get(`users/${data.author_id}`)
-            this.messaging.notifyUsers("twitter", user.data.username);
+            const userData = await user.get(`users/${data.author_id}`)
+            this.messaging.notifyUsers("twitter", userData.data.username);
         }
 
         stream.close();
