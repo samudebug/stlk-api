@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 class MessagingService {
     async addToTopic(registrationToken, socialMediaName, socialMediaHandle) {
         try {
-            await admin.messaging().subscribeToTopic([registrationToken], `/topics/${socialMediaName} ${socialMediaHandle} sub`);
+            await admin.messaging().subscribeToTopic([registrationToken], `/topics/${socialMediaName}_${socialMediaHandle}_sub`);
         } catch(err) {
             console.error(err);
             throw err;
