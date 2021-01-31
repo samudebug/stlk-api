@@ -35,7 +35,7 @@ class TwitterService {
             });
             let currentRules = await user.get('tweets/search/stream/rules');
             
-            if (currentRules.data.some((e) => e.tag === ruleTag)) {
+            if (currentRules.data && currentRules.data.some((e) => e.tag === ruleTag)) {
                 console.log('Rule already exists');
             } else {
                 const newRule = await user.post('tweets/search/stream/rules', {
