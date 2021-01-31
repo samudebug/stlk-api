@@ -53,6 +53,20 @@ class TwitterService {
         }
     }
 
+    async startStream() {
+        const user = new TwitterV2({
+            consumer_key: process.env.API_KEY,
+            consumer_secret: process.env.API_KEY_SECRET,
+        });
+
+        const stream = user.stream('tweets/search/stream', {expansions: "author_id"});
+        for await (const { data } of stream) {
+            console.log(data);
+        }
+
+        stream.close();
+    }
+
 }
 
 export default TwitterService;
