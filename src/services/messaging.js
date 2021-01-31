@@ -9,3 +9,4 @@ class MessagingService {
         }
     }
 }
+export default MessagingService;
