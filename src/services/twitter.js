@@ -2,8 +2,8 @@ import TwitterV2 from 'twitter-v2';
 import Twitter from 'twitter';
 
 class TwitterService {
-    constructor() {
-        
+    constructor(messagingService) {
+        this.messaging = messagingService;
     }
     
     async searchHandle(handle) {
@@ -63,7 +63,7 @@ class TwitterService {
         stream.close();
         stream = user.stream('tweets/search/stream', {expansions: "author_id"});
         for await (const { data } of stream) {
-            console.log(data);
+            this.messaging.notifyUsers("twitter",data.includes.users.username);
         }
 
         stream.close();

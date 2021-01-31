@@ -4,6 +4,7 @@ import cors from 'cors';
 import * as admin from 'firebase-admin';
 import routes from './routes';
 import TwitterService from './services/twitter';
+import MessagingService from './services/messaging';
 const credentials = require('./config/firebase-config.json');
 
 const app = express();
@@ -15,7 +16,8 @@ const setupExpress = () => {
         admin.initializeApp({credential: admin.credential.cert(credentials)});
     }
     app.use('/', routes);
-    const twitterService = new TwitterService();
+    const messagingService = new MessagingService();
+    const twitterService = new TwitterService(messagingService);
     twitterService.startStream();
     return app;
 }

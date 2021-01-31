@@ -8,5 +8,17 @@ class MessagingService {
             throw err;
         }
     }
+
+    async notifyUsers(socialMediaName, socialMediaHandle) {
+        try {
+            await admin.messaging().sendToTopic(`/topics/${socialMediaName}_${socialMediaHandle}_sub`, {data: {
+                socialMediaName: socialMediaName,
+                socialMediaHandle: socialMediaHandle,
+
+            }})
+        } catch (err) {
+            console.error(err);
+        }
+    }
 }
 export default MessagingService;
