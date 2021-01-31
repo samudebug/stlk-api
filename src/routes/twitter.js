@@ -9,6 +9,6 @@ const service = new TwitterService();
 const controller = new TwitterController(service);
 
 router.get('/search',(req, res) => controller.search(req, res));
-router.get('/test', (req, res) => controller.test(req, res));
+
 
 export default router;

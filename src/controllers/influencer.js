@@ -1,5 +1,9 @@
 import * as admin from 'firebase-admin';
 class InfluencerController {
+    constructor (twitterService, messagingService) {
+        this.twitter = twitterService;
+        this.messaging = messagingService;
+    }
     async list(req, res) {
         try {
             const userQuery = await admin.firestore().collection('users').where('uid', '==', req.uid).limit(1).get();
@@ -48,6 +52,13 @@ class InfluencerController {
             const user = await admin.firestore().collection('users').doc(req.userDocId);
             const influencerRef = await user.collection('influencers').doc(req.params.influencerId);
             await influencerRef.update({social_medias: admin.firestore.FieldValue.arrayUnion(req.body)});
+            switch(req.body.social_media_name) {
+                case 'twitter':
+                    await this.twitter.addTwitterRule(req.body.handle);
+                    await this.messaging.addToTopic(req.body.registration_token, req.body.social_media_name, req.body.handle);
+                    break;
+            }
+
             return res.send({message: "Social media added successfully"});
 
         } catch(err) {

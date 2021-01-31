@@ -3,7 +3,6 @@ import Twitter from 'twitter';
 
 class TwitterService {
     constructor() {
-        this.API_BEARER_TOKEN = process.env.TWITTER_API_BEARER_TOKEN;
         
     }
     
@@ -45,11 +44,12 @@ class TwitterService {
                         value: `from:${handle} -is:reply -is:retweet -is:quote`}
                     ]
                 });
+
             }
 
         } catch (err) {
             console.error(err);
-
+            throw err;
         }
     }
 
