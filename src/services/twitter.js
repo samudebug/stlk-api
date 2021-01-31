@@ -1,4 +1,5 @@
-import Twitter from 'twitter-lite';
+import TwitterV2 from 'twitter-v2';
+import Twitter from 'twitter';
 
 class TwitterService {
     constructor() {
@@ -14,10 +15,6 @@ class TwitterService {
                 access_token_key: process.env.ACCESS_TOKEN,
                 access_token_secret: process.env.ACCESS_TOKEN_SECRET
             });
-            const response = await user.getBearerToken();
-            const twitter = new Twitter({
-                bearer_token: response.access_token
-            }) 
             const results = await user.get("users/search", {q: handle});
             return results;
         }catch(err) {
@@ -25,6 +22,35 @@ class TwitterService {
             throw err;
         }
         
+    }
+
+    async addTwitterRule(handle) {
+        try {
+            const ruleTag = `${handle} notify`;
+            const user = new TwitterV2({
+                consumer_key: process.env.API_KEY,
+                consumer_secret: process.env.API_KEY_SECRET,
+          
+                
+            
+            });
+            let currentRules = await user.get('tweets/search/stream/rules');
+            
+            if (currentRules.data.some((e) => e.tag === ruleTag)) {
+                console.log('Rule already exists');
+            } else {
+                const newRule = await user.post('tweets/search/stream/rules', {
+                    add: [
+                        {tag: `${handle} notify`,
+                        value: `from:${handle} -is:reply -is:retweet -is:quote`}
+                    ]
+                });
+            }
+
+        } catch (err) {
+            console.error(err);
+
+        }
     }
 
 }

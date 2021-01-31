@@ -21,6 +21,15 @@ class TwitterController {
             return res.status(500).json({message: "An error has ocurred"});
         }
     }
+
+    async test(req, res) {
+        try {
+            await this.twitterService.addTwitterRule(req.query.handle);
+            res.send({message: "Rule added successfully"});
+        } catch(err) {
+            res.status(500).json({message: "An error has ocurred"});
+        }
+    }
 }
 
 export default TwitterController;

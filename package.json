@@ -15,7 +15,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase-admin": "^9.4.2",
-    "twitter-lite": "^0.14.0"
+    "twitter": "^1.7.1",
+    "twitter-v2": "^1.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
