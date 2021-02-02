@@ -34,6 +34,7 @@ class TwitterService {
             
             });
             let currentRules = await user.get('tweets/search/stream/rules');
+          
             
             if (currentRules.data && currentRules.data.some((e) => e.tag === ruleTag)) {
                 console.log('Rule already exists');
@@ -53,25 +54,56 @@ class TwitterService {
         }
     }
 
+    async deleteTwitterRule(handle) {
+        try {
+            const ruleTag = `${handle} notify`;
+            const user = new TwitterV2({
+                consumer_key: process.env.API_KEY,
+                consumer_secret: process.env.API_KEY_SECRET,
+            });
+            let currentRules = await user.get('tweets/search/stream/rules');
+            if (currentRules.data) {
+                const rule = currentRules.data.find((e) => e.tag === ruleTag);
+                await user.post('tweets/search/stream/rules', {
+                    delete: {
+                        ids: [
+                            rule.id
+                        ]
+                    }
+                })
+            }
+        } catch(err) {
+            console.error(err);
+            throw err;
+        }
+    }
+
     async startStream() {
+       try {
         const user = new TwitterV2({
             consumer_key: process.env.API_KEY,
             consumer_secret: process.env.API_KEY_SECRET,
         });
 
-        let stream = user.stream('tweets/search/stream', {expansions: "author_id"});
-        stream.close();
-        stream = user.stream('tweets/search/stream', {expansions: "author_id"});
+        this.stream = user.stream('tweets/search/stream', {expansions: "author_id"});
+        this.stream.close();
+        this.stream = user.stream('tweets/search/stream', {expansions: "author_id"});
         
-        for await (const { data } of stream) {
+        for await (const { data } of this.stream) {
             console.log(data);
             const userData = await user.get(`users/${data.author_id}`)
             this.messaging.notifyUsers("twitter", userData.data.username);
         }
 
-        stream.close();
+        this.stream.close();
+       } catch (error) {
+           console.error(error);
+           this.stream.close();
+       }
     }
-
+    async closeStream() {
+        this.stream.close();
+    }
 }
 
 export default TwitterService;

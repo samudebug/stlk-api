@@ -1,9 +1,20 @@
 import * as admin from 'firebase-admin';
 class MessagingService {
-    async addToTopic(registrationToken, socialMediaName, socialMediaHandle) {
+    async createSubscriber(user, fcmToken) {
         try {
-            await admin.messaging().subscribeToTopic([registrationToken], `/topics/${socialMediaName}_${socialMediaHandle}_sub`);
+            return await admin.firestore().collection('subscribers').add({user: user, fcmToken: fcmToken});
         } catch(err) {
+            console.error(err);
+            throw err;
+        }
+    }
+
+    async getSubscriber(user) {
+        try {
+            const subscriberQuery = await admin.firestore().collection('subscribers').where('user', '==', user).get();
+            if (subscriberQuery.empty) return null;
+            return subscriberQuery.docs[0].ref;
+        } catch (err) {
             console.error(err);
             throw err;
         }

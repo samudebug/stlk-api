@@ -21,6 +21,8 @@ class TwitterController {
             return res.status(500).json({message: "An error has ocurred"});
         }
     }
+
+   
 }
 
 export default TwitterController;

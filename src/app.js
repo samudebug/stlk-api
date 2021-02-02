@@ -19,6 +19,18 @@ const setupExpress = () => {
     const messagingService = new MessagingService();
     const twitterService = new TwitterService(messagingService);
     twitterService.startStream();
+    process.on('SIGTERM', () => {
+        console.info('SIGTERM signal received.');
+        console.log('Closing http server.');
+        twitterService.closeStream();
+    });
+    process.on ('SIGINT', () => {
+        console.info('SIGINT signal received.');
+        console.log('Closing http server.');
+        twitterService.closeStream();
+        process.exit(0);
+    }); 
+
     return app;
 }
 

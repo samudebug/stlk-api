@@ -2,10 +2,12 @@ import express from 'express';
 import InfluencerController from '../controllers/influencer';
 import TwitterService from '../services/twitter';
 import MessagingService from '../services/messaging';
+import SocialMediaService from '../services/socialMedia';
 const router = express.Router();
 const messagingService = new MessagingService();
 const twitterService = new TwitterService();
-const influencerController = new InfluencerController(twitterService, messagingService);
+const socialMediaService = new SocialMediaService(twitterService);
+const influencerController = new InfluencerController(twitterService, messagingService, socialMediaService);
 
 router.get('/', (req, res) => influencerController.list(req, res));
 router.get('/:influencerId', (req, res) => influencerController.get(req, res));
