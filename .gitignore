@@ -2,3 +2,4 @@
 #/src/config/firebase-config.json
 /dist
 twitterkeys.txt
+export.sh
